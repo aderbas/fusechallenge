@@ -14,20 +14,21 @@ class SearchView : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_view)
-        Log.i(this.TAG, "Search View Opened");
+        Log.i(this.TAG, "Search View Opened")
         handlerIntent(intent)
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-
         handlerIntent(intent)
     }
 
     private fun handlerIntent(intent: Intent?){
+        Log.i(TAG, "Recebeu o Intent?")
         if(intent?.action == Intent.ACTION_SEARCH){
-            val query = intent.getStringExtra(SearchManager.QUERY);
-            Log.i(this.TAG, "Search for: " + query);
+            intent?.getStringExtra(SearchManager.QUERY)?.also {query ->
+                Log.i(TAG, "Search by $query")
+            }
         }
     }
 }

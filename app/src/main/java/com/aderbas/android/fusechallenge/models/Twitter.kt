@@ -6,7 +6,7 @@ data class Twitter(
     @SerializedName("created_at")
     val createdAt : String,
     @SerializedName("id")
-    val id : Int,
+    val id : String,
     @SerializedName("text")
     val bodyText : String,
     @SerializedName("user")
