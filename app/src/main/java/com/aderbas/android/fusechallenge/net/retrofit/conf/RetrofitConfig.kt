@@ -18,4 +18,8 @@ object RetrofitConfig {
     fun<T> buildService(service: Class<T>): T{
         return retrofit.create(service)
     }
+
+    fun build() : Retrofit {
+        return retrofit
+    }
 }
