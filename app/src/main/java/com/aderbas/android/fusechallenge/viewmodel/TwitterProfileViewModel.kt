@@ -12,25 +12,23 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.lang.IllegalArgumentException
 
-class TwitterViewModel (private val service: TwitterService) : ViewModel() {
+class TwitterProfileViewModel (private val service: TwitterService) : ViewModel() {
     val twitterResult = MutableLiveData<List<Twitter>>()
     val errMessage = MutableLiveData<String>()
 
-    fun search(query: String) {
-        val request = service.search(query)
+    fun getPosts(username: String){
+        val request = service.getTwitterTimeline(username)
         request.run {
-            enqueue(object: Callback<SearchResult> {
-                override fun onFailure(call: Call<SearchResult>?, t: Throwable) {
-                    Log.e("SearchError", t.message as String)
+            enqueue(object: Callback<List<Twitter>>{
+
+                override fun onFailure(call: Call<List<Twitter>>?, t: Throwable) {
                     errMessage.postValue(t.message)
                 }
-
                 override fun onResponse(
-                    call: Call<SearchResult>?,
-                    response: Response<SearchResult>?
+                    call: Call<List<Twitter>>?,
+                    response: Response<List<Twitter>>?
                 ) {
-                    val list = response?.body()?.statuses as List<Twitter>
-                    Log.i("### RESPONSE ###", "Twitters found: ${list.size}")
+                    val list = response?.body() as List<Twitter>
                     twitterResult.postValue(list)
                 }
             })
@@ -38,11 +36,11 @@ class TwitterViewModel (private val service: TwitterService) : ViewModel() {
     }
 }
 
-class TwitterModelFactory (private val service: TwitterService): ViewModelProvider.Factory{
+class TwitterProfileViewModelFactory (private val service: TwitterService) : ViewModelProvider.Factory{
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return if (modelClass.isAssignableFrom(TwitterViewModel::class.java)){
-            TwitterViewModel(this.service) as T
-        } else {
+        return if(modelClass.isAssignableFrom(TwitterProfileViewModel::class.java)){
+            TwitterProfileViewModel(this.service) as T
+        }else{
             throw IllegalArgumentException("ViewModel Not Found")
         }
     }

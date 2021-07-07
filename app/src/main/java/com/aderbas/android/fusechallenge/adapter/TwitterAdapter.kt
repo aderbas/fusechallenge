@@ -1,14 +1,19 @@
 package com.aderbas.android.fusechallenge.adapter
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.ListAdapter
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.aderbas.android.fusechallenge.R
 import com.aderbas.android.fusechallenge.models.Twitter
+import com.aderbas.android.fusechallenge.util.TwitterUtils
+import com.bumptech.glide.Glide
 
 class TwitterAdapter(private val onCLick: (Twitter) -> Unit):
     ListAdapter<Twitter, TwitterAdapter.ViewHolder>(TwitterDiffCallback) {
@@ -18,6 +23,7 @@ class TwitterAdapter(private val onCLick: (Twitter) -> Unit):
         private val dateTextView: TextView = view.findViewById(R.id.create_at)
         private val userTextView: TextView = view.findViewById(R.id.user_name)
         private val twitterTextView: TextView = view.findViewById(R.id.twitter_content)
+        private val userImagePic: ImageView = view.findViewById(R.id.user_profile_image)
         private var current: Twitter? = null
 
         init {
@@ -30,9 +36,16 @@ class TwitterAdapter(private val onCLick: (Twitter) -> Unit):
 
         fun bind(twitter: Twitter){
             current = twitter
-            dateTextView.text = twitter.createdAt
+            dateTextView.text = TwitterUtils.instance().dateFormat(twitter.createdAt)
             userTextView.text = twitter.user.name
             twitterTextView.text = twitter.bodyText
+            twitterTextView.requestLayout()
+            // user image
+            Glide
+                .with(itemView)
+                .load(twitter.user.picUrl)
+                .circleCrop()
+                .into(userImagePic)
         }
     }
 
@@ -46,8 +59,6 @@ class TwitterAdapter(private val onCLick: (Twitter) -> Unit):
         val twitter = getItem(position)
         holder.bind(twitter)
     }
-
-    //override fun getItemCount() = 1
 }
 
 object TwitterDiffCallback : DiffUtil.ItemCallback<Twitter>() {

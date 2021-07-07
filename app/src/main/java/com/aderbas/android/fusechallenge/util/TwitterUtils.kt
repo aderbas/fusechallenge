@@ -1,9 +1,23 @@
 package com.aderbas.android.fusechallenge.util
 
-import com.aderbas.android.fusechallenge.net.retrofit.conf.RetrofitConfig
-import com.aderbas.android.fusechallenge.net.retrofit.service.TwitterService
+import android.os.Build
+import androidx.annotation.RequiresApi
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class TwitterUtils {
-    private val endpoint = RetrofitConfig.buildService(TwitterService::class.java)
+    companion object {
+        fun instance() : TwitterUtils {
+            return TwitterUtils()
+        }
+    }
 
+    fun dateFormat(stringDate: String): String {
+        val format = SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy", Locale.US)
+        val formatOut = SimpleDateFormat("mm/MM/yyyy", Locale.US)
+        return  formatOut.format(format.parse(stringDate))
+    }
 }

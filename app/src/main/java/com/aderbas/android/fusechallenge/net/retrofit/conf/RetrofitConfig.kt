@@ -9,6 +9,7 @@ object RetrofitConfig {
     private val client = OkHttpClient.Builder()
         .addInterceptor(Intercept())
         .build();
+
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://api.twitter.com/1.1/")
         .addConverterFactory(GsonConverterFactory.create())
