@@ -9,10 +9,9 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/user_profile_image"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="58dp"
+        android:layout_height="58dp"
         android:scaleType="centerCrop"
-        android:src="@mipmap/ic_launcher"
         android:layout_marginRight="@dimen/list_margin"/>
 
     <LinearLayout
@@ -23,14 +22,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/user_name"
-                android:textColor="@color/primary_dark"
+                style="@style/TwitterTheme.UserName"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/list_margin"/>
+                android:layout_height="wrap_content"/>
 
             <TextView
                 android:id="@+id/create_at"
@@ -41,6 +39,7 @@
 
         <TextView
             android:id="@+id/twitter_content"
+            style="@style/TwitterTheme.Body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

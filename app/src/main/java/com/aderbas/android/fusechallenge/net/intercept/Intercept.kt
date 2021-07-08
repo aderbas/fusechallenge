@@ -3,6 +3,9 @@ package com.aderbas.android.fusechallenge.net.intercept
 import okhttp3.Interceptor
 import okhttp3.Response
 
+/**
+ * Intercept HTTP Request
+ */
 class Intercept : Interceptor {
 
     private val token: String = "AAAAAAAAAAAAAAAAAAAAAPHURAEAAAAAvftHXoqrC5Z7GIZO5vwVyAWnGHA%3D6M1JCK18SwpSkGZg6rWcDRj6rQuGIGWEfb7Mi2QW1r9pZfLWAP"

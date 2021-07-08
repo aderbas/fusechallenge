@@ -16,6 +16,6 @@ data class User(
     val screen_name : String,
     @SerializedName("profile_image_url_https")
     val picUrl : String,
-    @SerializedName("profile_background_image_url_https")
+    @SerializedName("profile_banner_url")
     val profileBackground : String
 ) : Serializable

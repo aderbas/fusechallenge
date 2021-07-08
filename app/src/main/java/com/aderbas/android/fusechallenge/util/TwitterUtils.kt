@@ -17,7 +17,7 @@ class TwitterUtils {
 
     fun dateFormat(stringDate: String): String {
         val format = SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy", Locale.US)
-        val formatOut = SimpleDateFormat("mm/MM/yyyy", Locale.US)
+        val formatOut = SimpleDateFormat("mm/MM/yyyy HH:mm:ss", Locale.US)
         return  formatOut.format(format.parse(stringDate))
     }
 }

@@ -1,6 +1,5 @@
 package com.aderbas.android.fusechallenge.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -16,12 +15,15 @@ class TwitterViewModel (private val service: TwitterService) : ViewModel() {
     val twitterResult = MutableLiveData<List<Twitter>>()
     val errMessage = MutableLiveData<String>()
 
+    /**
+     * Search on twitter
+     * @param query
+     */
     fun search(query: String) {
         val request = service.search(query)
         request.run {
             enqueue(object: Callback<SearchResult> {
                 override fun onFailure(call: Call<SearchResult>?, t: Throwable) {
-                    Log.e("SearchError", t.message as String)
                     errMessage.postValue(t.message)
                 }
 
@@ -30,14 +32,20 @@ class TwitterViewModel (private val service: TwitterService) : ViewModel() {
                     response: Response<SearchResult>?
                 ) {
                     val list = response?.body()?.statuses as List<Twitter>
-                    Log.i("### RESPONSE ###", "Twitters found: ${list.size}")
-                    twitterResult.postValue(list)
+                    if(list.isNotEmpty()) {
+                        twitterResult.postValue(list)
+                    }else{
+                        errMessage.postValue("No results found.")
+                    }
                 }
             })
         }
     }
 }
 
+/**
+ * Factory
+ */
 class TwitterModelFactory (private val service: TwitterService): ViewModelProvider.Factory{
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return if (modelClass.isAssignableFrom(TwitterViewModel::class.java)){

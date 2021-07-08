@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -40,6 +41,9 @@ class SearchActivity : AppCompatActivity() {
         handlerIntent(intent)
     }
 
+    /**
+     * Setup
+     */
     private fun init(){
         var twitterAdapter = TwitterAdapter { twitter -> adapterOnClick(twitter)  }
         val recycleView : RecyclerView = twitter_list
@@ -47,16 +51,25 @@ class SearchActivity : AppCompatActivity() {
         recycleView.apply {
             addItemDecoration(DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL))
         }
-        twitterListViewModel.twitterResult.observe(this, Observer {
+        twitterListViewModel.twitterResult.observe(this, {
             it?.let {
                 twitterAdapter.submitList(it as MutableList<Twitter>)
                 twitterAdapter.notifyDataSetChanged()
                 progress.visibility = View.GONE
             }
         })
+        twitterListViewModel.errMessage.observe(this, {
+            Toast.makeText(this, it as String, Toast.LENGTH_SHORT).show()
+            progress.visibility = View.GONE
+        })
+
         handlerIntent(intent)
     }
 
+    /**
+     * handler intent
+     * @param intent
+     */
     private fun handlerIntent(intent: Intent?){
         if(intent?.action == Intent.ACTION_SEARCH){
             progress.visibility = View.VISIBLE
@@ -66,9 +79,13 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * User click a item from listview
+     * @param twitter
+     */
     private fun adapterOnClick(twitter: Twitter){
         val intent = Intent(this, ProfileActivity::class.java)
-        intent.putExtra("user", twitter.user)
+        intent.putExtra("selected", twitter.user)
         startActivity(intent)
     }
 }

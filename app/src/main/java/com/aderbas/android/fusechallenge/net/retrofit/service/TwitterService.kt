@@ -8,6 +8,9 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
+/**
+ * Configure service
+ */
 interface TwitterService {
     @GET("search/tweets.json")
     fun search(@Query("q") query : String) : Call<SearchResult>
@@ -17,8 +20,7 @@ interface TwitterService {
 
     companion object {
         fun create() : TwitterService {
-            val retrofit = RetrofitConfig.build()
-            return retrofit.create(TwitterService::class.java)
+            return RetrofitConfig.buildService(TwitterService::class.java)
         }
     }
 }

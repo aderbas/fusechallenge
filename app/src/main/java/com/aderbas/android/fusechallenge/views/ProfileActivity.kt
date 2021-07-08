@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -19,8 +20,9 @@ import com.aderbas.android.fusechallenge.viewmodel.TwitterProfileViewModel
 import com.aderbas.android.fusechallenge.viewmodel.TwitterProfileViewModelFactory
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_profile.*
-import kotlinx.android.synthetic.main.activity_search_view.progress
-import kotlinx.android.synthetic.main.activity_search_view.twitter_list
+import kotlinx.android.synthetic.main.activity_profile.progress
+import kotlinx.android.synthetic.main.activity_profile.twitter_list
+import kotlinx.android.synthetic.main.activity_search_view.*
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -39,6 +41,9 @@ class ProfileActivity : AppCompatActivity() {
         init()
     }
 
+    /**
+     * Setup
+     */
     private fun init(){
         var twitterAdapter = TwitterAdapter { twitter -> adapterOnClick(twitter)  }
         val recycleView : RecyclerView = twitter_list
@@ -53,20 +58,30 @@ class ProfileActivity : AppCompatActivity() {
                 progress.visibility = View.GONE
             }
         })
+        postsViewModel.errMessage.observe(this, {
+            Toast.makeText(this, it as String, Toast.LENGTH_SHORT).show()
+            progress.visibility = View.GONE
+        })
 
         handlerIntent(intent)
     }
 
+    /**
+     * Handler intent
+     * @param intent: Intent
+     */
     private fun handlerIntent(intent: Intent){
-        intent?.getSerializableExtra("user").also { user ->
-            Log.i("USER CLICKED", (user as User).screen_name)
+        intent?.getSerializableExtra("selected").also { selected ->
+            val user = selected as User
             progress.visibility = View.VISIBLE
-            postsViewModel.getPosts((user as User).screen_name)
+            toolbar_title.title = user.name
+            postsViewModel.getPosts(user.screen_name)
             Glide
                 .with(this)
-                .load((user as User).profileBackground)
+                .load(user.profileBackground)
                 .centerCrop()
                 .into(profile_background_pic)
+
         }
     }
 

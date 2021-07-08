@@ -5,6 +5,9 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+/**
+ * Configure Retrofit
+ */
 object RetrofitConfig {
     private val client = OkHttpClient.Builder()
         .addInterceptor(Intercept())
@@ -16,11 +19,10 @@ object RetrofitConfig {
         .client(client)
         .build()
 
+    /**
+     * Build custom service
+     */
     fun<T> buildService(service: Class<T>): T{
         return retrofit.create(service)
-    }
-
-    fun build() : Retrofit {
-        return retrofit
     }
 }

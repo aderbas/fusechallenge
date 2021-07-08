@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TwitterTheme" parent="android:Theme.Light">
+        <item name="android:textAppearance">@style/TwitterTheme.UserName</item>
+    </style>
+    <style name="TwitterTheme.UserName" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/primary_dark</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="TwitterTheme.Body" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/black_text</item>
+        <item name="android:textSize">16dp</item>
+    </style>
+</resources>

@@ -16,6 +16,10 @@ class TwitterProfileViewModel (private val service: TwitterService) : ViewModel(
     val twitterResult = MutableLiveData<List<Twitter>>()
     val errMessage = MutableLiveData<String>()
 
+    /**
+     * Get selected user posts
+     * @param username
+     */
     fun getPosts(username: String){
         val request = service.getTwitterTimeline(username)
         request.run {
@@ -29,13 +33,20 @@ class TwitterProfileViewModel (private val service: TwitterService) : ViewModel(
                     response: Response<List<Twitter>>?
                 ) {
                     val list = response?.body() as List<Twitter>
-                    twitterResult.postValue(list)
+                    if(list.isNotEmpty()) {
+                        twitterResult.postValue(list)
+                    }else{
+                        errMessage.postValue("No results found.")
+                    }
                 }
             })
         }
     }
 }
 
+/**
+ * Factory
+ */
 class TwitterProfileViewModelFactory (private val service: TwitterService) : ViewModelProvider.Factory{
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return if(modelClass.isAssignableFrom(TwitterProfileViewModel::class.java)){
